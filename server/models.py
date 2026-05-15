@@ -1,6 +1,6 @@
 from app import Base
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String
+from sqlalchemy import String, ForeignKey
 from datetime import date, datetime
 
 class User(Base):
@@ -33,3 +33,16 @@ class Patient(Base):
 
     def __repr__(self):
         return f"<Patient {self.id}>"
+    
+class Condition(Base):
+    __tablename__ = "conditions"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    patient_id: Mapped[str] = mapped_column(String(36), ForeignKey("patients.id"), nullable=False)
+    start_date: Mapped[date] = mapped_column(nullable=False)
+    stop_date: Mapped[date] = mapped_column(nullable=True)
+    code: Mapped[str] = mapped_column(String(20), nullable=False)
+    description: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def __repr__(self):
+        return f"<Condition {self.id}>"

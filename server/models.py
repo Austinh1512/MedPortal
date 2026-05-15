@@ -46,3 +46,20 @@ class Condition(Base):
 
     def __repr__(self):
         return f"<Condition {self.id}>"
+    
+class Observation(Base):
+    __tablename__ = "observations"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    patient_id: Mapped[str] = mapped_column(String(36), ForeignKey("patients.id"), nullable=False)
+    date: Mapped[date] = mapped_column(nullable=False)
+    category: Mapped[str] = mapped_column(String(100), nullable=True)
+    code: Mapped[str] = mapped_column(String(20), nullable=False)
+    description: Mapped[str] = mapped_column(String(255), nullable=False)
+    value: Mapped[str] = mapped_column(String(100), nullable=True)
+    units: Mapped[str] = mapped_column(String(50), nullable=True)
+    type: Mapped[str] = mapped_column(String(50), nullable=True)
+
+    def __repr__(self):
+        return f"<Observation {self.id}>"
+    

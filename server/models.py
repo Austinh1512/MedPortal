@@ -42,7 +42,7 @@ class Condition(Base):
     start_date: Mapped[date] = mapped_column(nullable=False)
     stop_date: Mapped[date] = mapped_column(nullable=True)
     code: Mapped[str] = mapped_column(String(20), nullable=False)
-    description: Mapped[str] = mapped_column(String(255), nullable=False)
+    description: Mapped[str] = mapped_column(String(500), nullable=False)
 
     def __repr__(self):
         return f"<Condition {self.id}>"
@@ -55,9 +55,9 @@ class Medication(Base):
     start_date: Mapped[date] = mapped_column(nullable=False)
     stop_date: Mapped[date] = mapped_column(nullable=True)
     code: Mapped[str] = mapped_column(String(20), nullable=False)
-    description: Mapped[str] = mapped_column(String(255), nullable=False)
+    description: Mapped[str] = mapped_column(String(500), nullable=False)
     reason_code: Mapped[str] = mapped_column(String(20), nullable=True)
-    reason_description: Mapped[str] = mapped_column(String(255), nullable=True)
+    reason_description: Mapped[str] = mapped_column(String(500), nullable=True)
 
     def __repr__(self):
         return f"<Medication {self.id}>"
@@ -68,10 +68,10 @@ class Observation(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     patient_id: Mapped[str] = mapped_column(String(36), ForeignKey("patients.id"), nullable=False)
     observation_date: Mapped[date] = mapped_column(nullable=False)
-    category: Mapped[str] = mapped_column(String(100), nullable=True)
+    category: Mapped[str] = mapped_column(String(255), nullable=True)
     code: Mapped[str] = mapped_column(String(20), nullable=False)
-    description: Mapped[str] = mapped_column(String(255), nullable=False)
-    value: Mapped[str] = mapped_column(String(100), nullable=True)
+    description: Mapped[str] = mapped_column(String(500), nullable=False)
+    value: Mapped[str] = mapped_column(String(255), nullable=True)
     units: Mapped[str] = mapped_column(String(50), nullable=True)
     type: Mapped[str] = mapped_column(String(50), nullable=True)
 
@@ -84,9 +84,9 @@ class Encounter(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     patient_id: Mapped[str] = mapped_column(String(36), ForeignKey("patients.id"), nullable=False)
     start_date: Mapped[date] = mapped_column(nullable=False)
-    encounter_class: Mapped[str] = mapped_column(String(100), nullable=True)
-    code: Mapped[str] = mapped_column(String(20), nullable=True)
-    description: Mapped[str] = mapped_column(String(255), nullable=True)
+    encounter_class: Mapped[str] = mapped_column(String(100), nullable=False)
+    code: Mapped[str] = mapped_column(String(20), nullable=False)
+    description: Mapped[str] = mapped_column(String(500), nullable=False)
     reason_code: Mapped[str] = mapped_column(String(20), nullable=True)
     reason_description: Mapped[str] = mapped_column(String(255), nullable=True)
 

@@ -33,7 +33,7 @@ def register():
         db.session.rollback()
         return jsonify({"error": "Could not create user."}), 500
     
-    return jsonify({"message": "Hit register route"}), 200
+    return jsonify({"email": email, "username": username}), 200
 
 def login():
     data = request.get_json()

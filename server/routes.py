@@ -1,0 +1,51 @@
+from flask import Blueprint
+
+#Dashboard
+dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
+@dashboard_bp.route("/stats")
+def getDashboardSummary():
+   return "Dashboard stats"
+
+#Patients
+patients_bp = Blueprint("patients", __name__, url_prefix="/patients")
+@patients_bp.route("/")
+def getPatients():
+    return "Get Patients"
+
+@patients_bp.route("/<id>")
+def getPatientById(id):
+    return f"Patient <{id}>"
+
+@patients_bp.route("/<id>/conditions")
+def getPatientConditions(id):
+    return f"Patient <{id} conditions>"
+
+@patients_bp.route("/<id>/medications")
+def getPatientMedications(id):
+    return f"Patient <{id}> medications"
+
+@patients_bp.route("/<id>/observations")
+def getPatientObservations(id):
+    return f"Patient <{id}> observations"
+
+@patients_bp.route("/<id>/encounters")
+def getPatientEncounters(id):
+    return f"Patient <{id}> encounters"
+
+#Auth
+auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
+@auth_bp.route("/register")
+def register():
+    return "register"
+
+@auth_bp.route("/login")
+def login():
+    return "login"
+
+@auth_bp.route("/logout")
+def logout():
+    return "logout"
+
+@auth_bp.route("/refresh")
+def refresh():
+    return "refresh"

@@ -1,8 +1,8 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy 
 from extensions import db
 from dotenv import load_dotenv
 import models
+from routes import dashboard_bp, patients_bp, auth_bp
 import os
 
 load_dotenv()
@@ -13,6 +13,10 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 db.init_app(app)
 
+#Routes
+app.register_blueprint(dashboard_bp)
+app.register_blueprint(patients_bp)
+app.register_blueprint(auth_bp)
 @app.route("/")
 def test():
     return "Hello, World!"

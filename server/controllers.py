@@ -9,7 +9,7 @@ def register():
     if data is None:
         return jsonify({"message": "No json provided"}), 400
 
-    email = data.get("email")
+    email = data.get("email").lower()
     username = data.get("username")
     pw = data.get("password")
 
@@ -38,7 +38,7 @@ def register():
 def login():
     data = request.get_json()
 
-    email = data.get("email")
+    email = data.get("email").lower()
     pw = data.get("password")
 
     if not email or not pw:

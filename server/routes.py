@@ -1,4 +1,5 @@
 from flask import Blueprint
+import controllers
 
 #Dashboard
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -34,9 +35,9 @@ def getPatientEncounters(id):
 
 #Auth
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
-@auth_bp.route("/register")
+@auth_bp.route("/register", methods=['POST'])
 def register():
-    return "register"
+    return controllers.register()
 
 @auth_bp.route("/login")
 def login():

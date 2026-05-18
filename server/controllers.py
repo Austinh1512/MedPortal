@@ -18,7 +18,7 @@ def register():
 
     pw_bytes = pw.encode("utf-8")
     salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(pw_bytes, salt)
+    hashed = bcrypt.hashpw(pw_bytes, salt).decode("utf-8")
 
     try:
         new_user = User(
@@ -36,4 +36,25 @@ def register():
     return jsonify({"message": "Hit register route"}), 200
 
 def login():
-    pass
+    data = request.get_json()
+
+    email = data.get("email")
+    pw = data.get("password")
+
+    if not email or not pw:
+        return jsonify({"error": "Missing required data."}), 400
+
+    user = db.session.execute(db.select(User).filter_by(email=email)).scalar_one_or_none()
+
+    if not user:
+        return jsonify({"error": "User can not be found."}), 404
+
+    pw_bytes = pw.encode("utf-8")
+    result = bcrypt.checkpw(pw_bytes, user.password.encode("utf-8"))
+
+    if result:
+        return jsonify({"email": user.email, "username": user.username}), 200
+    elif not result:
+        return jsonify({"error": "Incorrect password"}), 401
+    
+    return jsonify({"error": "Something went wrong"}), 500

@@ -39,9 +39,9 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 def register():
     return controllers.register()
 
-@auth_bp.route("/login")
+@auth_bp.route("/login", methods=["POST"])
 def login():
-    return "login"
+    return controllers.login()
 
 @auth_bp.route("/logout")
 def logout():

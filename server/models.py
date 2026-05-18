@@ -10,6 +10,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     username: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
+    refresh_token: Mapped[str] = mapped_column(String(255), nullable=True)
     date_created: Mapped[datetime] = mapped_column(default=datetime.now)
 
     def __repr__(self):

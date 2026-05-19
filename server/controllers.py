@@ -1,7 +1,10 @@
 import bcrypt
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from models import User
 from extensions import db
+from utils import generateAccessToken, generateRefreshToken
+from dotenv import load_dotenv
+import os
 
 def register():
     data = request.get_json()
@@ -33,7 +36,22 @@ def register():
         db.session.rollback()
         return jsonify({"error": "Could not create user."}), 500
     
-    return jsonify({"email": email, "username": username}), 200
+    accessToken = generateAccessToken(new_user.id)
+    refreshToken = generateRefreshToken(new_user.id)
+
+    try:
+        new_user.refresh_token = refreshToken
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify({"error": "Could not update user session."}), 500
+    
+    response = make_response(jsonify({"email": new_user.email, "username": new_user.username, "accessToken": accessToken}), 200)
+    environment = os.getenv("FLASK_ENV")
+    secure = environment == "production"
+    samesite = "Lax" if environment == "development" else "None"
+    response.set_cookie("refresh", refreshToken, httponly=True, secure=secure, samesite=samesite)
+    return response
 
 def login():
     data = request.get_json()
@@ -53,8 +71,21 @@ def login():
     result = bcrypt.checkpw(pw_bytes, user.password.encode("utf-8"))
 
     if result:
-        return jsonify({"email": user.email, "username": user.username}), 200
-    elif not result:
-        return jsonify({"error": "Incorrect password"}), 401
+        accessToken = generateAccessToken(user.id)
+        refreshToken = generateRefreshToken(user.id)
+        
+        try:
+            user.refresh_token = refreshToken
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return jsonify({"error": "Could not update user session."}), 500
+
+        response = make_response(jsonify({"email": user.email, "username": user.username, "accessToken": accessToken}), 200)
+        environment = os.getenv("FLASK_ENV")
+        secure = environment == "production"
+        samesite = "Lax" if environment == "development" else "None"
+        response.set_cookie("refresh", refreshToken, httponly=True, secure=secure, samesite=samesite)
+        return response
     
-    return jsonify({"error": "Something went wrong"}), 500
+    return jsonify({"error": "Incorrect password"}), 401

@@ -12,3 +12,6 @@ def generateAccessToken(user_id):
 
 def generateRefreshToken(user_id):
     return jwt.encode({"id": user_id, "exp": datetime.now(timezone.utc) + timedelta(days=7)}, jwt_secret, algorithm="HS256")
+
+def decodeJWT(token):
+    return jwt.decode(token, jwt_secret, algorithms=["HS256"])

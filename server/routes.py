@@ -43,9 +43,9 @@ def register():
 def login():
     return controllers.login()
 
-@auth_bp.route("/logout")
+@auth_bp.route("/logout", methods=["POST"])
 def logout():
-    return "logout"
+    return controllers.logout()
 
 @auth_bp.route("/refresh")
 def refresh():

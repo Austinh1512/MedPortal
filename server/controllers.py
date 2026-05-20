@@ -2,9 +2,11 @@ import bcrypt
 from flask import request, jsonify, make_response
 from models import User
 from extensions import db
-from utils import generateAccessToken, generateRefreshToken
+from utils import generateAccessToken, generateRefreshToken, decodeJWT
 from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 def register():
     data = request.get_json()
@@ -89,3 +91,30 @@ def login():
         return response
     
     return jsonify({"error": "Incorrect password"}), 401
+
+def logout():
+    refreshCookie = request.cookies.get("refresh")
+
+    if not refreshCookie:
+        return jsonify({"error": "No refresh token can be found."}), 401
+
+    decoded = decodeJWT(refreshCookie)
+    user_id = decoded["id"]
+    user = db.session.execute(db.select(User).filter_by(id=user_id)).scalar_one_or_none()
+
+    if not user:
+        return jsonify({"error": "User can not be found."}), 404
+    
+    try:
+        user.refresh_token = None
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify({"error": "Could not update user session."}), 500
+
+    response = make_response(jsonify({"message": "User successfully logged out"}), 200)
+    response.delete_cookie("refresh")
+    return response
+
+    def refresh():
+        pass

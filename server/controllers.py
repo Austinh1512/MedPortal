@@ -90,7 +90,7 @@ def login():
         response.set_cookie("refresh", refreshToken, httponly=True, secure=secure, samesite=samesite)
         return response
     
-    return jsonify({"error": "Incorrect password"}), 401
+    return jsonify({"error": "Incorrect password."}), 401
 
 def logout():
     refreshCookie = request.cookies.get("refresh")
@@ -99,6 +99,10 @@ def logout():
         return jsonify({"error": "No refresh token can be found."}), 401
 
     decoded = decodeJWT(refreshCookie)
+
+    if not decoded:
+        return jsonify({"error": "Invalid or expired refresh token."}), 401
+
     user_id = decoded["id"]
     user = db.session.execute(db.select(User).filter_by(id=user_id)).scalar_one_or_none()
 
@@ -116,5 +120,21 @@ def logout():
     response.delete_cookie("refresh")
     return response
 
-    def refresh():
-        pass
+def refresh():
+    refreshCookie = request.cookies.get("refresh")
+
+    if not refreshCookie:
+        return jsonify({"error": "No refresh token can be found."}), 401
+    
+    decoded = decodeJWT(refreshCookie)
+
+    if not decoded:
+        return jsonify({"error": "Invalid or expired refresh token."}), 401
+
+    user = db.session.execute(db.select(User).filter_by(refresh_token=refreshCookie)).scalar_one_or_none()
+
+    if not user:
+        return jsonify({"error": "Unauthorized token."}), 401
+    
+    accessToken = generateAccessToken(user.id)
+    return jsonify({"accessToken": accessToken}), 200

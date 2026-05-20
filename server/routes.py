@@ -47,6 +47,6 @@ def login():
 def logout():
     return controllers.logout()
 
-@auth_bp.route("/refresh")
+@auth_bp.route("/refresh", methods=["POST"])
 def refresh():
-    return "refresh"
+    return controllers.refresh()

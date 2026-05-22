@@ -1,5 +1,7 @@
+from utils import protected
 from flask import Blueprint
 import controllers.auth as auth
+import controllers.patients as patients
 
 #Dashboard
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -10,8 +12,9 @@ def getDashboardSummary():
 #Patients
 patients_bp = Blueprint("patients", __name__, url_prefix="/patients")
 @patients_bp.route("/")
+@protected
 def getPatients():
-    return "Get Patients"
+    return patients.getPatients()
 
 @patients_bp.route("/<id>")
 def getPatientById(id):

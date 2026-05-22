@@ -1,6 +1,8 @@
 import jwt
 from dotenv import load_dotenv
 from datetime import datetime, timedelta, timezone
+from functools import wraps
+from flask import request, jsonify
 import os
 
 load_dotenv()
@@ -18,3 +20,16 @@ def decodeJWT(token):
         return jwt.decode(token, jwt_secret, algorithms=["HS256"])
     except jwt.ExpiredSignatureError or jwt.InvalidTokenError:
         return None
+    
+def protected(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if request.headers.get("Authorization"):
+            token = request.headers.get("Authorization").split(" ")[1]
+            if not decodeJWT(token):
+                return jsonify({"error": "Unauthorized access."}), 401
+            return func(*args, **kwargs)
+        else:
+            return jsonify({"error": "Unauthorized access."}), 401
+        
+    return wrapper

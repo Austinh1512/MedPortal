@@ -35,6 +35,22 @@ class Patient(Base):
     def __repr__(self):
         return f"<Patient {self.id}>"
     
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "race": self.race,
+            "ethnicity": self.ethnicity,
+            "gender": self.gender,
+            "address": self.address,
+            "city": self.city,
+            "state": self.state,
+            "zip": self.zip,
+            "birth_date": self.birth_date.isoformat(),
+            "death_date": self.death_date.isoformat() if self.death_date else None
+        }
+    
 class Condition(Base):
     __tablename__ = "conditions"
 

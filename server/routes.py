@@ -1,5 +1,5 @@
 from flask import Blueprint
-import controllers
+import controllers.auth as auth
 
 #Dashboard
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -37,16 +37,16 @@ def getPatientEncounters(id):
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 @auth_bp.route("/register", methods=['POST'])
 def register():
-    return controllers.register()
+    return auth.register()
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    return controllers.login()
+    return auth.login()
 
 @auth_bp.route("/logout", methods=["POST"])
 def logout():
-    return controllers.logout()
+    return auth.logout()
 
 @auth_bp.route("/refresh", methods=["POST"])
 def refresh():
-    return controllers.refresh()
+    return auth.refresh()

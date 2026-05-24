@@ -17,8 +17,9 @@ def getPatients():
     return patients.getPatients()
 
 @patients_bp.route("/<id>")
+@protected
 def getPatientById(id):
-    return f"Patient <{id}>"
+    return patients.getPatientById(id)
 
 @patients_bp.route("/<id>/conditions")
 def getPatientConditions(id):

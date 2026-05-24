@@ -64,6 +64,16 @@ class Condition(Base):
     def __repr__(self):
         return f"<Condition {self.id}>"
     
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "patient_id": self.patient_id,
+            "start_date": self.start_date.isoformat(),
+            "stop_date": self.stop_date.isoformat() if self.stop_date else None,
+            "code": self.code,
+            "description": self.description
+        }
+    
 class Medication(Base):
     __tablename__ = "medications"
 
@@ -78,6 +88,18 @@ class Medication(Base):
 
     def __repr__(self):
         return f"<Medication {self.id}>"
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "patient_id": self.patient_id,
+            "start_date": self.start_date.isoformat(),
+            "stop_date": self.stop_date.isoformat() if self.stop_date else None,
+            "code": self.code,
+            "description": self.description,
+            "reason_code": self.reason_code,
+            "reason_description": self.reason_description
+        }
     
 class Observation(Base):
     __tablename__ = "observations"
@@ -95,6 +117,19 @@ class Observation(Base):
     def __repr__(self):
         return f"<Observation {self.id}>"
     
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "patient_id": self.patient_id,
+            "observation_date": self.observation_date.isoformat(),
+            "category": self.category,
+            "code": self.code,
+            "description": self.description,
+            "value": self.value,
+            "units": self.units,
+            "type": self.type
+        }
+    
 class Encounter(Base):
     __tablename__ = "encounters"
 
@@ -109,3 +144,15 @@ class Encounter(Base):
 
     def __repr__(self):
         return f"<Encounter {self.id}>"
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "patient_id": self.patient_id,
+            "start_date": self.start_date.isoformat(),
+            "encounter_class": self.encounter_class,
+            "code": self.code,
+            "description": self.description,
+            "reason_code": self.reason_code,
+            "reason_description": self.reason_description
+        }

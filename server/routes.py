@@ -27,16 +27,19 @@ def getPatientConditions(id):
     return patients.getPatientConditions(id)
 
 @patients_bp.route("/<id>/medications")
+@protected
 def getPatientMedications(id):
-    return f"Patient <{id}> medications"
+    return patients.getPatientMedications(id)
 
 @patients_bp.route("/<id>/observations")
+@protected
 def getPatientObservations(id):
-    return f"Patient <{id}> observations"
+    return patients.getPatientObservations(id)
 
 @patients_bp.route("/<id>/encounters")
+@protected
 def getPatientEncounters(id):
-    return f"Patient <{id}> encounters"
+    return patients.getPatientEncounters(id)
 
 #Auth
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")

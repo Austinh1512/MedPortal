@@ -2,7 +2,7 @@ from flask import Flask
 from extensions import db
 from dotenv import load_dotenv
 import models
-from routes import dashboard_bp, patients_bp, auth_bp
+from routes import dashboard_bp, patients_bp, auth_bp, upload_bp
 import os
 
 load_dotenv()
@@ -17,6 +17,7 @@ db.init_app(app)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(patients_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(upload_bp)
 @app.route("/")
 def test():
     return "Hello, World!"

@@ -2,6 +2,7 @@ from utils import protected
 from flask import Blueprint
 import controllers.auth as auth
 import controllers.patients as patients
+import controllers.uploads as uploads
 
 #Dashboard
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -58,3 +59,25 @@ def logout():
 @auth_bp.route("/refresh", methods=["POST"])
 def refresh():
     return auth.refresh()
+
+#Uploads
+upload_bp = Blueprint("upload", __name__, url_prefix="/upload")
+@upload_bp.route("/patients", methods=["POST"])
+def uploadPatients():
+    pass
+
+@upload_bp.route("/conditions", methods=["POST"])
+def uploadConditions():
+    pass
+
+@upload_bp.route("/medications", methods=["POST"])
+def uploadMedications():
+    pass
+
+@upload_bp.route("/observations", methods=["POST"])
+def uploadObservations():
+    pass
+
+@upload_bp.route("/encounters", methods=["POST"])
+def uploadEncounters():
+    pass

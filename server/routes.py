@@ -64,20 +64,20 @@ def refresh():
 upload_bp = Blueprint("upload", __name__, url_prefix="/upload")
 @upload_bp.route("/patients", methods=["POST"])
 def uploadPatients():
-    pass
+    return uploads.uploadPatients()
 
 @upload_bp.route("/conditions", methods=["POST"])
 def uploadConditions():
-    pass
+    return uploads.uploadConditions()
 
 @upload_bp.route("/medications", methods=["POST"])
 def uploadMedications():
-    pass
+    return uploads.uploadMedications()
 
 @upload_bp.route("/observations", methods=["POST"])
 def uploadObservations():
-    pass
+    return uploads.uploadObservations()
 
 @upload_bp.route("/encounters", methods=["POST"])
 def uploadEncounters():
-    pass
+    return uploads.uploadEncounters()

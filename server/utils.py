@@ -3,10 +3,12 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 from flask import request, jsonify
+import boto3
 import os
 
 load_dotenv()
 
+#JWT
 jwt_secret = os.getenv("JWT_SECRET_KEY")
 
 def generateAccessToken(user_id):
@@ -20,7 +22,8 @@ def decodeJWT(token):
         return jwt.decode(token, jwt_secret, algorithms=["HS256"])
     except jwt.ExpiredSignatureError or jwt.InvalidTokenError:
         return None
-    
+
+#Route Protector Decorator   
 def protected(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -33,3 +36,6 @@ def protected(func):
             return jsonify({"error": "Unauthorized access."}), 401
         
     return wrapper
+
+#AWS S3 Setup
+s3 = boto3.client("s3")

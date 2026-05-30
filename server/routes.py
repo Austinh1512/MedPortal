@@ -8,6 +8,7 @@ import controllers.dashboard as dashboard
 #Dashboard
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 @dashboard_bp.route("/stats")
+@protected
 def getDashboardSummary():
    return dashboard.getDashboardSummary()
 
@@ -64,21 +65,26 @@ def refresh():
 #Uploads
 upload_bp = Blueprint("upload", __name__, url_prefix="/upload")
 @upload_bp.route("/patients", methods=["POST"])
+@protected
 def uploadPatients():
     return uploads.uploadPatients()
 
 @upload_bp.route("/conditions", methods=["POST"])
+@protected
 def uploadConditions():
     return uploads.uploadConditions()
 
 @upload_bp.route("/medications", methods=["POST"])
+@protected
 def uploadMedications():
     return uploads.uploadMedications()
 
 @upload_bp.route("/observations", methods=["POST"])
+@protected
 def uploadObservations():
     return uploads.uploadObservations()
 
 @upload_bp.route("/encounters", methods=["POST"])
+@protected
 def uploadEncounters():
     return uploads.uploadEncounters()

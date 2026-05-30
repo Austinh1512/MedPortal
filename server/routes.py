@@ -3,12 +3,13 @@ from flask import Blueprint
 import controllers.auth as auth
 import controllers.patients as patients
 import controllers.uploads as uploads
+import controllers.dashboard as dashboard
 
 #Dashboard
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 @dashboard_bp.route("/stats")
 def getDashboardSummary():
-   return "Dashboard stats"
+   return dashboard.getDashboardSummary()
 
 #Patients
 patients_bp = Blueprint("patients", __name__, url_prefix="/patients")

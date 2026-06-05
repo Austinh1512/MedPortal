@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from extensions import db
 from dotenv import load_dotenv
 import models
@@ -10,6 +11,7 @@ load_dotenv()
 db_url = os.getenv("DATABASE_URL")
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 db.init_app(app)
 

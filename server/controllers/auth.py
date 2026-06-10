@@ -137,4 +137,4 @@ def refresh():
         return jsonify({"error": "Unauthorized token."}), 401
     
     accessToken = generateAccessToken(user.id)
-    return jsonify({"accessToken": accessToken}), 200
+    return jsonify({"email": user.email, "username": user.username, "accessToken": accessToken}), 200
